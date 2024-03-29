@@ -2,6 +2,7 @@ package com.example.sarahkhan_boggleapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListener, LettersFragment.GameplayActionsListener {
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListen
     }
 
     override fun onScoreUpdated(score: Int) {
+        Log.d("ScoreFragment", "Score received by onScoreUpdated: $score")
         val scoreFragment = supportFragmentManager.findFragmentById(R.id.scorefragment) as? ScoreFragment
         scoreFragment?.updateScore(score)
     }

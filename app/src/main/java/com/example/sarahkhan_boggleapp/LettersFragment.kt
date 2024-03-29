@@ -3,6 +3,7 @@ package com.example.sarahkhan_boggleapp
 import android.content.Context
 import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -91,8 +92,10 @@ class LettersFragment : Fragment() {
             wordScore
 
         }
-        currentScore = max(currentScore + score, 0)
+        currentScore = currentScore + score
         gameplayActionsListener?.onScoreUpdated(currentScore)
+        Log.d("ScoreFragment", "Updating score to: $currentScore")
+
 
     }
 
@@ -130,6 +133,7 @@ class LettersFragment : Fragment() {
                     layoutParams = GridLayout.LayoutParams().apply {
                         width = 0
                         height = 0
+
                         setGravity(Gravity.FILL)
                         setMargins(5, 5, 5, 5)
                         columnSpec = GridLayout.spec(col, 1f)

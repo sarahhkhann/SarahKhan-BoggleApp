@@ -2,6 +2,7 @@ package com.example.sarahkhan_boggleapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,9 @@ class ScoreFragment : Fragment() {
     }
 
     fun updateScore(score: Int) {
-        scoreTextView.text = "Score: $score"
+        Log.d("ScoreFragment", "score being written: $score")
+
+        scoreTextView.text = "score: $score"
     }
 
     override fun onAttach(context: Context) {
