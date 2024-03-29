@@ -10,12 +10,10 @@ class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListen
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            // Add MainGameplayFragment
             supportFragmentManager.beginTransaction()
                 .replace(R.id.lettersfragment, LettersFragment())
                 .commit()
 
-            // Add ScoreResetFragment
             supportFragmentManager.beginTransaction()
                 .replace(R.id.scorefragment, ScoreFragment())
                 .commit()

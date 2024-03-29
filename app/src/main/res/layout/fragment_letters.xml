@@ -16,8 +16,10 @@
         android:alignmentMode="alignMargins"
         android:columnCount="4"
         android:padding="16dp"
+        android:gravity="center"
+        android:rowCount="4">
 
-        android:rowCount="4"></GridLayout>
+    </GridLayout>
 
     <TextView
         android:layout_width="wrap_content"
