@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
-class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListener {
+class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListener, LettersFragment.GameplayActionsListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,5 +31,10 @@ class MainActivity : AppCompatActivity(), ScoreFragment.OnNewGameRequestedListen
 
         val scoreFragment = supportFragmentManager.findFragmentById(R.id.scorefragment) as? ScoreFragment
         scoreFragment?.updateScore(0)
+    }
+
+    override fun onScoreUpdated(score: Int) {
+        val scoreFragment = supportFragmentManager.findFragmentById(R.id.scorefragment) as? ScoreFragment
+        scoreFragment?.updateScore(score)
     }
 }

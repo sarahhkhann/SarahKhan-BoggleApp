@@ -1,5 +1,7 @@
 package com.example.sarahkhan_boggleapp
 
+import android.content.Context
+import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -10,6 +12,8 @@ import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
+import java.util.Locale
+import kotlin.math.max
 import kotlin.random.Random
 
 
@@ -18,6 +22,7 @@ class LettersFragment : Fragment() {
     private lateinit var lettersGrid: GridLayout
     private var selectedLetters = StringBuilder()
     private lateinit var wordtext: TextView
+    private var currentScore: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,22 +33,73 @@ class LettersFragment : Fragment() {
         lettersGrid = view.findViewById(R.id.lettersGrid)
         wordtext = view.findViewById(R.id.wordguess)
 
+        loadDictionary(requireContext())
         initializeGrid(view)
 
 
         view.findViewById<Button>(R.id.submitButton).setOnClickListener {
+            val currentWord = selectedLetters.toString().lowercase(Locale.getDefault())
+            checkword(currentWord)
+            clearSelection()
         }
 
-        val clearButton = view.findViewById<Button>(R.id.clearButton)
-        clearButton.setOnClickListener {
+        view.findViewById<Button>(R.id.clearButton).setOnClickListener {
             clearSelection()
         }
 
         return view
     }
+    private lateinit var wordDictionary: Set<String>
 
     private lateinit var gridLetters: List<Letter>
+    private val madewords = mutableSetOf<String>()
 
+    private fun loadDictionary(context: Context) {
+        val inputStream = context.resources.openRawResource(R.raw.words)
+
+        wordDictionary = inputStream.bufferedReader().useLines { lines ->
+            lines.map { it.lowercase() }.toSet()
+        }
+    }
+    private fun checkword(word: String) {
+        val vowels = setOf('A', 'E', 'I', 'O', 'U')
+        val specialletters = setOf('S', 'Z', 'P', 'X', 'Q')
+        val score = if (word.length < 4) {
+            Toast.makeText(context, "Invalid guess. Word must contain more than 4 letters. -10", Toast.LENGTH_SHORT).show()
+            -10
+        } else if (word.count {it.uppercaseChar() in vowels} < 2) {
+            Toast.makeText(context, "Invalid guess. Word must contain at least 2 vowels. -10", Toast.LENGTH_SHORT).show()
+            -10
+        } else if (!isWordValid(word)) {
+            Toast.makeText(context, "Invalid word. -10", Toast.LENGTH_SHORT).show()
+            -10
+        } else if (word in madewords) {
+            Toast.makeText(context, "Word already used. -10", Toast.LENGTH_SHORT).show()
+            -10
+        } else {
+            var wordScore = word.uppercase(Locale.ROOT).sumOf { char ->
+                when (char) {
+                    in vowels -> 5
+                    else -> 1
+                } as Int
+            }
+            if (word.any {it.uppercaseChar() in specialletters}) {
+                wordScore *= 2
+            }
+            madewords.add(word)
+            Toast.makeText(context, "Correct! +$wordScore", Toast.LENGTH_SHORT).show()
+            wordScore
+
+        }
+        currentScore = max(currentScore + score, 0)
+        gameplayActionsListener?.onScoreUpdated(currentScore)
+
+    }
+
+
+    private fun isWordValid(word: String): Boolean {
+        return wordDictionary.contains(word.lowercase())
+    }
     private fun initializeGrid(view: View) {
         lettersGrid.removeAllViews()
         val context = view.context
@@ -130,6 +186,25 @@ class LettersFragment : Fragment() {
         }
 
         lastSelectedLetter = null
+    }
+
+    interface GameplayActionsListener {
+        fun onScoreUpdated(score: Int)
+    }
+    private var gameplayActionsListener: GameplayActionsListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is GameplayActionsListener) {
+            gameplayActionsListener = context
+        } else {
+            throw RuntimeException("$context must implement GameplayActionsListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        gameplayActionsListener = null
     }
 
 }
