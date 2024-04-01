@@ -40,10 +40,12 @@
     <EditText
         android:id="@+id/wordguess"
         android:layout_width="118dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
         android:fontFamily="@font/poppins"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:enabled="false" />
-
 
 
     <LinearLayout
@@ -60,8 +62,9 @@
             android:layout_below="@id/lettersGrid"
             android:layout_alignParentStart="true"
             android:layout_marginTop="16dp"
-            android:background="@drawable/button"
             android:layout_marginEnd="16dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white"
             android:fontFamily="@font/poppins"
             android:text="clear" />
 
@@ -70,13 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/lettersGrid"
-            android:fontFamily="@font/poppins"
-            android:background="@drawable/button"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/poppins"
             android:text="submit" />
     </LinearLayout>
-
 
 
 </LinearLayout>

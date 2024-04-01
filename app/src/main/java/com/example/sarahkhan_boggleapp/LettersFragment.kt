@@ -92,7 +92,7 @@ class LettersFragment : Fragment() {
             wordScore
 
         }
-        currentScore = currentScore + score
+        currentScore = Math.max(currentScore + score, 0)
         gameplayActionsListener?.onScoreUpdated(currentScore)
         Log.d("ScoreFragment", "Updating score to: $currentScore")
 
