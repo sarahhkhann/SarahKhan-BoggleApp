@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="boggle"
+        android:textSize="20dp
+"
         android:textColor="@color/white"
         android:fontFamily="@font/poppins"
         />
@@ -20,9 +22,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="enter a word then hit submit"
+        android:text="to play: enter a word then hit submit. shake for new game."
+        android:textSize="12dp"
         android:textColor="@color/white"
         android:fontFamily="@font/poppins"/>
+
+
 
     <GridLayout
         android:id="@+id/lettersGrid"
